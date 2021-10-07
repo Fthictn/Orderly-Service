@@ -255,6 +255,7 @@ public class GeneralServiceImpl implements GeneralService {
     @Override
     public PostResponse getAllPosts() {
         List<PostLightDTO> lightList = new ArrayList<>();
+        postRepository = null;
         List<PostEntity> postList = postRepository.findAll();
         PostResponse response = new PostResponse();
 
