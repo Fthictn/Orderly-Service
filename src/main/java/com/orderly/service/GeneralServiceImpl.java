@@ -68,8 +68,9 @@ public class GeneralServiceImpl implements GeneralService {
         List<UserEntity> userList= userRepository.findByUserEmailAndUserPassword(request.getEmail(),request.getPassword());
         userResponse = new ArrayList<>();
         UserResponse response = new UserResponse();
+        List<UserLightDTO> lightList;
         if(userList != null && !userList.isEmpty()){
-            List<UserLightDTO> lightList = new ArrayList<>();
+            lightList = new ArrayList<>();
             userResponse.add(userList.get(0));
             response.setStatusCode(HttpStatus.OK);
             response.setErrorMessage(Messages.LOGIN_SUCCEED);
