@@ -20,14 +20,29 @@ import com.orderly.response.UserResponse;
 import com.orderly.service.GeneralService;
 import com.orderly.utils.EntityToDTOConverter;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.*;
 
 @ApiOperation(value = "/orderly/v1/api", tags = "Orderly Controller", notes = "Orderly API")
 @RequestMapping("/orderly/v1/api")
@@ -47,7 +62,7 @@ public class OrderlyController {
     EntityToDTOConverter converter;
 
     @Autowired
-    public OrderlyController(UserRepository userRepo, PostRepository postRepo, AnswerRepository answerRepo, GeneralService service, ProjectRepository projectRepo,
+    public OrderlyController(UserRepository userRepo, PostRepository postRepo, AnswerRepository answerRepo, @Qualifier("generalService") GeneralService service, ProjectRepository projectRepo,
                              EntityToDTOConverter converter) {
         this.userRepo = userRepo;
         this.postRepo = postRepo;
@@ -55,6 +70,10 @@ public class OrderlyController {
         this.service = service;
         this.projectRepo = projectRepo;
         this.converter = converter;
+    }
+
+    public OrderlyController() {
+
     }
 
     @ApiOperation(value = "Get all posts", response = PostResponse.class)
@@ -130,8 +149,8 @@ public class OrderlyController {
 
     @ApiOperation(value = "Get answer by post id", response = AnswerResponse.class)
     @PostMapping("/posts/{postId}/answers")
-    public AnswerResponse getAllAnswersByPostId(@PathVariable (value = "postId") int userId){
-        return service.getAnswersByPostId(userId);
+    public AnswerResponse getAllAnswersByPostId(@PathVariable (value = "postId") int postId){
+        return service.getAnswersByPostId(postId);
     }
 
     @ApiOperation(value = "Get post by project code", response = PostResponse.class)

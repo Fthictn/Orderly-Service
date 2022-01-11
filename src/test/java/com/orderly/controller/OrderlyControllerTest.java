@@ -8,7 +8,6 @@ class OrderlyControllerTest {
 
     @Test
     void getAllPosts() {
-        assertEquals(100,100);
     }
 
     @Test
