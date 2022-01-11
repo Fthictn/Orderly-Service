@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Service
+@Service("generalService")
 public class GeneralServiceImpl implements GeneralService {
 
     UserRepository userRepository;
