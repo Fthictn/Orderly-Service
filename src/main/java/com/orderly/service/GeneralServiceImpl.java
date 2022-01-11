@@ -94,7 +94,7 @@ public class GeneralServiceImpl implements GeneralService {
             if (user.getUserEmail().trim().equals(entity.getUserEmail().trim())) {
                 response.setErrorMessage(Messages.EMAIL_EXIST);
                 response.setStatusCode(HttpStatus.NOT_ACCEPTABLE);
-                isValid = false;
+                isValid = true;
                 break;
             }
         }
