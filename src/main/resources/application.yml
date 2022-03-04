@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/orderly?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: projectsheriff@gmail.com
+    password: 46636481356f
+    port: 587
+    protocol: smtp
+    test-connection: false
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+  main:
+    log-startup-info: false
+  jpa:
+    hibernate:
+      ddl-auto: none

@@ -13,4 +13,8 @@ public class UserRequest {
 
         @ApiModelProperty(notes = "password of the request", name = "password")
         private String password;
+
+        @ApiModelProperty(notes = "userName of the request", name = "userName")
+        private String userName;
+
 }

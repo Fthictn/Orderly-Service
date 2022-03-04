@@ -17,6 +17,8 @@ import com.orderly.response.AnswerResponse;
 import com.orderly.response.PostResponse;
 import com.orderly.response.ProjectResponse;
 import com.orderly.response.UserResponse;
+import com.orderly.security.CustomUserDetailsService;
+import com.orderly.security.JwtUtil;
 import com.orderly.service.GeneralService;
 import com.orderly.utils.EntityToDTOConverter;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +32,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -45,35 +51,39 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.util.*;
 
 @ApiOperation(value = "/orderly/v1/api", tags = "Orderly Controller", notes = "Orderly API")
-@RequestMapping("/orderly/v1/api")
 @RestController
 public class OrderlyController {
 
-    public UserRepository userRepo;
+    private final UserRepository userRepo;
 
-    public PostRepository postRepo;
+    private final PostRepository postRepo;
 
-    public AnswerRepository answerRepo;
+    private final AnswerRepository answerRepo;
 
-    public GeneralService service;
+    private final GeneralService service;
 
-    public ProjectRepository projectRepo;
+    private final ProjectRepository projectRepo;
 
-    EntityToDTOConverter converter;
+    private final EntityToDTOConverter converter;
+
+    private final JwtUtil jwtUtil;
+
+    private final AuthenticationManager authenticationManager;
+
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     public OrderlyController(UserRepository userRepo, PostRepository postRepo, AnswerRepository answerRepo, @Qualifier("generalService") GeneralService service, ProjectRepository projectRepo,
-                             EntityToDTOConverter converter) {
+                             EntityToDTOConverter converter, JwtUtil jwtUtil, AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService) {
         this.userRepo = userRepo;
         this.postRepo = postRepo;
         this.answerRepo = answerRepo;
         this.service = service;
         this.projectRepo = projectRepo;
         this.converter = converter;
-    }
-
-    public OrderlyController() {
-
+        this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @ApiOperation(value = "Get all posts", response = PostResponse.class)
@@ -101,9 +111,9 @@ public class OrderlyController {
     }
 
     @ApiOperation(value = "Controls user informations", response = UserResponse.class)
-    @PostMapping("/authonticate")
-    public UserResponse authanticateUser(@RequestBody UserRequest request){
-        return service.UserAuthanticater(request);
+    @PostMapping("/login")
+    public UserResponse login(@RequestBody UserRequest request) throws Exception {
+        return service.userAuthenticater(request);
     }
 
     @ApiOperation(value = "Create new user", response = UserResponse.class)
@@ -124,7 +134,7 @@ public class OrderlyController {
     }
 
     @ApiOperation(value = "Add answer", response = AnswerResponse.class)
-    @PostMapping("/createAnswer")
+    @PostMapping("/createAnswer/")
     public AnswerResponse createAnswer(@RequestBody AnswerLightDTO entity){
         return service.CreateAnswer(entity);
     }

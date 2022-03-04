@@ -18,12 +18,19 @@ import com.orderly.response.AnswerResponse;
 import com.orderly.response.PostResponse;
 import com.orderly.response.ProjectResponse;
 import com.orderly.response.UserResponse;
+import com.orderly.security.CustomUserDetailsService;
+import com.orderly.security.JwtUtil;
 import com.orderly.utils.EntityToDTOConverter;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,43 +44,58 @@ import java.util.List;
 @Service("generalService")
 public class GeneralServiceImpl implements GeneralService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
 
-    PostRepository postRepository;
+    private final PostRepository postRepository;
 
-    AnswerRepository answerRepository;
+    private final AnswerRepository answerRepository;
 
-    List<UserEntity> userResponse = new ArrayList<>();
+    private List<UserEntity> userResponse = new ArrayList<>();
 
-    List<ProjectEntity> projectResponse = new ArrayList<>();
+    private List<ProjectEntity> projectResponse = new ArrayList<>();
 
-    EntityToDTOConverter converter;
+    private final EntityToDTOConverter converter;
 
-    JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
+    private final JwtUtil jwtUtil;
+
+    private final AuthenticationManager authenticationManager;
+
+    CustomUserDetailsService customUserDetailsService;
     @Autowired
     GeneralServiceImpl(UserRepository userRepository,ProjectRepository projectRepository,PostRepository postRepository,AnswerRepository answerRepository,
-                       EntityToDTOConverter converter,JavaMailSender mailSender){
+                       EntityToDTOConverter converter,JavaMailSender mailSender, JwtUtil jwtUtil, AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService){
         this.userRepository=userRepository;
         this.projectRepository = projectRepository;
         this.postRepository = postRepository;
         this.answerRepository = answerRepository;
         this.converter = converter;
         this.mailSender = mailSender;
+        this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
+        this.customUserDetailsService = customUserDetailsService;
     }
     @Override
-    public UserResponse UserAuthanticater(UserRequest request) {
-        List<UserEntity> userList= userRepository.findByUserEmailAndUserPassword(request.getEmail(),request.getPassword());
+    public UserResponse userAuthenticater(UserRequest request) throws Exception {
+
+        Authentication authResult = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()));
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getUserName());
+
+        String token = jwtUtil.generateToken(userDetails);
+
+        List<UserEntity> userList= userRepository.findUserEntityByUserNameSurnameAndUserPassword(request.getUserName(),request.getPassword());
         userResponse = new ArrayList<>();
         UserResponse response = new UserResponse();
         List<UserLightDTO> lightList;
-        if(userList != null && !userList.isEmpty()){
+        if(userList != null && !userList.isEmpty() && authResult.isAuthenticated()){
             lightList = new ArrayList<>();
             userResponse.add(userList.get(0));
             response.setStatusCode(HttpStatus.OK);
             response.setErrorMessage(Messages.LOGIN_SUCCEED);
+            response.setToken(token);
             userResponse.forEach(user ->
                     lightList.add(converter.userConverter(user))
             );
@@ -256,7 +278,6 @@ public class GeneralServiceImpl implements GeneralService {
     @Override
     public PostResponse getAllPosts() {
         List<PostLightDTO> lightList = new ArrayList<>();
-        postRepository = null;
         List<PostEntity> postList = postRepository.findAll();
         PostResponse response = new PostResponse();
 

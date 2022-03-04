@@ -24,4 +24,7 @@ public class UserResponse {
 
     @ApiModelProperty(notes = "date of the response", name = "dateTime")
     private LocalDateTime dateTime = LocalDateTime.now();
+
+    @ApiModelProperty(notes = "token of the response", name = "token")
+    private String token;
 }

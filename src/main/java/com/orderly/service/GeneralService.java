@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 public interface GeneralService {
-    UserResponse UserAuthanticater(UserRequest request);
+    UserResponse userAuthenticater(UserRequest request) throws Exception;
     UserResponse CreateNewUser(UserLightDTO entity);
     UserResponse UpdateUser(UserLightDTO entity);
     ProjectResponse CreateNewProject(ProjectLightDTO entity);
