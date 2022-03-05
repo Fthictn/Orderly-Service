@@ -22,6 +22,8 @@ import com.orderly.security.CustomUserDetailsService;
 import com.orderly.security.JwtUtil;
 import com.orderly.utils.EntityToDTOConverter;
 import org.apache.catalina.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -43,6 +45,8 @@ import java.util.List;
 
 @Service("generalService")
 public class GeneralServiceImpl implements GeneralService {
+
+    private final Logger log = LoggerFactory.getLogger(GeneralServiceImpl.class.getName());
 
     private final UserRepository userRepository;
 
