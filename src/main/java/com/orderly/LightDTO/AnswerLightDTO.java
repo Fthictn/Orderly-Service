@@ -18,6 +18,4 @@ public class AnswerLightDTO {
 
     private PostLightDTO postEntity;
 
-    public AnswerLightDTO(){}
-
 }
