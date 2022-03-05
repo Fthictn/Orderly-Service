@@ -177,8 +177,7 @@ public class GeneralServiceImpl implements GeneralService {
             }
 
            userRepository.save(existingEntity);
-           UserEntity responseEntity = userRepository.findByUserEmail(existingEntity.getUserEmail());
-           userResponse.add(responseEntity);
+           userResponse.add(userRepository.findByUserEmail(existingEntity.getUserEmail()));
            response.setErrorMessage(Messages.USER_INFOS_UPDATED);
            response.setStatusCode(HttpStatus.OK);
 
