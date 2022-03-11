@@ -18,8 +18,8 @@ import static org.springframework.security.crypto.password.NoOpPasswordEncoder.*
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private CustomUserDetailsService customUserDetailsService;
-    private JwtFilter jwtFilter;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtFilter jwtFilter;
 
     public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtFilter jwtFilter) {
         this.customUserDetailsService = customUserDetailsService;
