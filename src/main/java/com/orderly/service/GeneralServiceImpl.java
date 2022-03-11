@@ -113,81 +113,80 @@ public class GeneralServiceImpl implements GeneralService {
 
     @Override
     public UserResponse CreateNewUser(UserLightDTO entity) {
-        boolean isValid = true;
         userResponse = new ArrayList<>();
+
+        List<UserEntity> allUsers = userRepository.findAll();
+        UserResponse response = userExistingControl(allUsers,entity);
+        List<UserLightDTO> lightList = new ArrayList<>();
+        UserEntity entityToSave = new UserEntity();
+        entityToSave.setIsBanned(entity.getIsBanned());
+        entityToSave.setUserEmail(entity.getUserEmail());
+        entityToSave.setUserNameSurname(entity.getUserNameSurname());
+        entityToSave.setUserPassword(entity.getUserPassword());
+        entityToSave.setUserRole(entity.getUserRole());
+        entityToSave.setUserTitle(entity.getUserTitle());
+        userRepository.save(entityToSave);
+        UserEntity responseEntity = userRepository.findByUserEmail(entity.getUserEmail());
+        userResponse.add(responseEntity);
+        userResponse.forEach(user ->
+                lightList.add(converter.userConverter(user))
+        );
+        response.setResponse(lightList);
+        response.setStatusCode(HttpStatus.OK);
+        response.setErrorMessage(Messages.REGISTER_SUCCEED);
+        return response;
+    }
+
+    private UserResponse userExistingControl(List<UserEntity> allUsers, UserLightDTO entity){
         UserResponse response = new UserResponse();
-        List<UserEntity> allUsers = (List<UserEntity>) userRepository.findAll();
         for (UserEntity user:allUsers) {
             if (user.getUserEmail().trim().equals(entity.getUserEmail().trim())) {
                 response.setErrorMessage(Messages.EMAIL_EXIST);
                 response.setStatusCode(HttpStatus.NOT_ACCEPTABLE);
-                isValid = true;
                 break;
             }
         }
-        if(isValid){
-            List<UserLightDTO> lightList = new ArrayList<>();
-            UserEntity entityToSave = new UserEntity();
-            entityToSave.setIsBanned(entity.getIsBanned());
-            entityToSave.setUserEmail(entity.getUserEmail());
-            entityToSave.setUserNameSurname(entity.getUserNameSurname());
-            entityToSave.setUserPassword(entity.getUserPassword());
-            entityToSave.setUserRole(entity.getUserRole());
-            entityToSave.setUserTitle(entity.getUserTitle());
-            userRepository.save(entityToSave);
-            UserEntity responseEntity = userRepository.findByUserEmail(entity.getUserEmail());
-            userResponse.add(responseEntity);
-
-            userResponse.forEach(user ->
-                    lightList.add(converter.userConverter(user))
-            );
-            response.setResponse(lightList);
-            response.setStatusCode(HttpStatus.OK);
-            response.setErrorMessage(Messages.REGISTER_SUCCEED);
-            return response;
-        }else {
-            return response;
-        }
+        return response;
     }
 
     @Override
     public UserResponse UpdateUser(UserLightDTO entity) {
-            UserResponse response = new UserResponse();
-            userResponse = new ArrayList<>();
-            List<UserLightDTO> lightList = new ArrayList<>();
-            UserEntity existingEntity = userRepository.findById(entity.getId());
-
-            if(entity.getUserEmail() != null){
-                existingEntity.setUserEmail(entity.getUserEmail());
-            }
-            if(entity.getIsBanned() != null){
-                existingEntity.setIsBanned(entity.getIsBanned());
-            }
-            if(entity.getUserNameSurname() != null){
-                existingEntity.setUserNameSurname(entity.getUserNameSurname());
-            }
-            if(entity.getUserPassword() != null){
-                existingEntity.setUserPassword(entity.getUserPassword());
-            }
-            if(entity.getUserRole() != null){
-                existingEntity.setUserRole(entity.getUserRole());
-            }
-            if(entity.getUserTitle() != null){
-                existingEntity.setUserTitle(entity.getUserTitle());
-            }
-
-           userRepository.save(existingEntity);
+           UserResponse response = new UserResponse();
+           userResponse = new ArrayList<>();
+           List<UserLightDTO> lightList = new ArrayList<>();
+           UserEntity existingEntity = userRepository.findById(entity.getId());
+           userRepository.save(getExistingEntity(existingEntity,entity));
            userResponse.add(userRepository.findByUserEmail(existingEntity.getUserEmail()));
            response.setErrorMessage(Messages.USER_INFOS_UPDATED);
            response.setStatusCode(HttpStatus.OK);
-
-            userResponse.forEach(user ->
-                    lightList.add(converter.userConverter(user))
-            );
-
-
+           userResponse.forEach(user ->
+                   lightList.add(converter.userConverter(user))
+           );
            response.setResponse(lightList);
            return response;
+    }
+
+    private UserEntity getExistingEntity(UserEntity existingEntity, UserLightDTO entity){
+        if(entity.getUserEmail() != null){
+            existingEntity.setUserEmail(entity.getUserEmail());
+        }
+        if(entity.getIsBanned() != null){
+            existingEntity.setIsBanned(entity.getIsBanned());
+        }
+        if(entity.getUserNameSurname() != null){
+            existingEntity.setUserNameSurname(entity.getUserNameSurname());
+        }
+        if(entity.getUserPassword() != null){
+            existingEntity.setUserPassword(entity.getUserPassword());
+        }
+        if(entity.getUserRole() != null){
+            existingEntity.setUserRole(entity.getUserRole());
+        }
+        if(entity.getUserTitle() != null){
+            existingEntity.setUserTitle(entity.getUserTitle());
+        }
+
+        return existingEntity;
     }
 
     @Override
@@ -283,15 +282,12 @@ public class GeneralServiceImpl implements GeneralService {
         List<PostLightDTO> lightList = new ArrayList<>();
         List<PostEntity> postList = postRepository.findAll();
         PostResponse response = new PostResponse();
-
         postList.forEach(post ->
                 lightList.add(converter.postConverter(post))
         );
-
         response.setResponse(lightList);
         response.setStatusCode(HttpStatus.OK);
         response.setErrorMessage(Messages.GENERAL_SUCCEED_MESSAGE);
-
         return response;
     }
 
@@ -300,15 +296,12 @@ public class GeneralServiceImpl implements GeneralService {
         List<AnswerLightDTO> lightList = new ArrayList<>();
         List<AnswerEntity> answerList = answerRepository.findAll();
         AnswerResponse response = new AnswerResponse();
-
         answerList.forEach(answer ->
                 lightList.add(converter.answerConverter(answer))
         );
-
         response.setResponse(lightList);
         response.setStatusCode(HttpStatus.OK);
         response.setErrorMessage(Messages.GENERAL_SUCCEED_MESSAGE);
-
         return response;
     }
 
@@ -317,15 +310,12 @@ public class GeneralServiceImpl implements GeneralService {
         List<ProjectLightDTO> lightList = new ArrayList<>();
         List<ProjectEntity> projectList = projectRepository.findAll();
         ProjectResponse response = new ProjectResponse();
-
         projectList.forEach(projectEntity ->
                 lightList.add(converter.projectConverter(projectEntity))
         );
-
         response.setResponse(lightList);
         response.setStatusCode(HttpStatus.OK);
         response.setErrorMessage(Messages.GENERAL_SUCCEED_MESSAGE);
-
         return response;
     }
 
@@ -334,15 +324,12 @@ public class GeneralServiceImpl implements GeneralService {
         List<UserLightDTO> lightList = new ArrayList<>();
         List<UserEntity> userList = userRepository.findAll();
         UserResponse response = new UserResponse();
-
         userList.forEach(user ->
                 lightList.add(converter.userConverter(user))
         );
-
         response.setResponse(lightList);
         response.setStatusCode(HttpStatus.OK);
         response.setErrorMessage(Messages.GENERAL_SUCCEED_MESSAGE);
-
         return response;
     }
 
@@ -352,21 +339,25 @@ public class GeneralServiceImpl implements GeneralService {
         List<PostEntity> postList = postRepository.findByProjectId(projectEntity);
         List<PostLightDTO> lightList = new ArrayList<>();
         PostResponse response = new PostResponse();
-
         postList.forEach(post ->
                 lightList.add(converter.postConverter(post))
         );
-
         response.setResponse(lightList);
         response.setStatusCode(HttpStatus.OK);
         response.setErrorMessage(Messages.GENERAL_SUCCEED_MESSAGE);
-
         return response;
     }
 
     @Override
     public PostResponse CreatePost(PostLightDTO entity) {
         PostResponse response = new PostResponse();
+        postRepository.save(getEntityToSave(entity));
+        response.setErrorMessage(Messages.GENERAL_SUCCEED_MESSAGE);
+        response.setStatusCode(HttpStatus.OK);
+        return response;
+    }
+
+    private PostEntity getEntityToSave(PostLightDTO entity){
         PostEntity entityToSave = new PostEntity();
         entityToSave.setPostTitle(entity.getPostTitle());
         entityToSave.setPostContent(entity.getPostContent());
@@ -376,10 +367,7 @@ public class GeneralServiceImpl implements GeneralService {
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setId(entity.getProjectEntity().getId());
         entityToSave.setProjectId(projectEntity);
-        postRepository.save(entityToSave);
-        response.setErrorMessage(Messages.GENERAL_SUCCEED_MESSAGE);
-        response.setStatusCode(HttpStatus.OK);
-        return response;
+        return entityToSave;
     }
 
     @Override
@@ -402,7 +390,6 @@ public class GeneralServiceImpl implements GeneralService {
     public Boolean sendMail() {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-
         try {
             messageHelper.setTo("fthi.cetin@gmail.com");
             messageHelper.setText("Üyeliğiniz oluşturulmuştur.");
@@ -414,5 +401,4 @@ public class GeneralServiceImpl implements GeneralService {
         mailSender.send(mimeMessage);
         return true;
     }
-
 }
