@@ -3,14 +3,14 @@ package com.orderly.entity;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "answer")
 @ApiModel(description = "Answer Model")
@@ -37,18 +37,5 @@ public class AnswerEntity {
     @Column(name = "is_correct")
     @ApiModelProperty(notes = "correctless state of the Answer", name = "isCorrect")
     private String isCorrect;
-
-    @Override
-    public String toString() {
-        return "AnswerEntity{" +
-                "id=" + id +
-                ", postId=" + postId +
-                ", content='" + content + '\'' +
-                ", createdTime='" + createdTime + '\'' +
-                ", isCorrect='" + isCorrect + '\'' +
-                '}';
-    }
-
-    public AnswerEntity() { }
 
 }

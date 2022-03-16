@@ -3,14 +3,14 @@ package com.orderly.entity;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "user")
 @ApiModel(description = "User Model")
@@ -49,21 +49,5 @@ public class UserEntity {
     @Column(name = "is_banned")
     @ApiModelProperty(notes = "ban state of the User", name = "isBanned")
     private String isBanned;
-
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "id=" + id +
-                ", userNameSurname='" + userNameSurname + '\'' +
-                ", userTitle='" + userTitle + '\'' +
-                ", projects=" + projects +
-                ", userRole='" + userRole + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", isBanned='" + isBanned + '\'' +
-                '}';
-    }
-
-    public UserEntity() { }
 
 }

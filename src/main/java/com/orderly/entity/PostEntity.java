@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -12,8 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "post")
 @ApiModel(description = "Post Model")
@@ -51,22 +51,5 @@ public class PostEntity {
     //Technical Question, General Question, Installation Question
     @ApiModelProperty(notes = "type of the Post", name = "type")
     private String type;
-
-    @Override
-    public String toString() {
-        return "PostEntity{" +
-                "id=" + id +
-                ", projectId=" + projectId +
-                ", postTitle='" + postTitle + '\'' +
-                ", answers=" + answers +
-                ", postContent='" + postContent + '\'' +
-                ", createdTime='" + createdTime + '\'' +
-                ", isSolved='" + isSolved + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
-
-    public PostEntity() { }
-
 
 }

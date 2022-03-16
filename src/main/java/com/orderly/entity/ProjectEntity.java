@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -12,8 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "project")
 @ApiModel(description = "Project Model")
@@ -41,14 +41,4 @@ public class ProjectEntity {
     @ApiModelProperty(notes = "code of the Project", name = "projectCode")
     private String projectCode;
 
-    @Override
-    public String toString() {
-        return "ProjectEntity{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", posts=" + posts +
-                ", projectName='" + projectName + '\'' +
-                ", projectCode='" + projectCode + '\'' +
-                '}';
-    }
 }
