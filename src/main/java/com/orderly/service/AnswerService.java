@@ -4,7 +4,6 @@ import com.orderly.LightDTO.AnswerLightDTO;
 import com.orderly.response.AnswerResponse;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface AnswerService {
     AnswerResponse getAnswersByPostId(int postId);
     AnswerResponse getAllAnswers();

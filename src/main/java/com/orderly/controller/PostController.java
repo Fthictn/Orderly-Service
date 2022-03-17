@@ -13,7 +13,7 @@ public class PostController {
 
     private final PostService service;
 
-    public PostController(@Qualifier("postServiceImpl") PostService service) {
+    public PostController(PostService service) {
         this.service = service;
     }
 

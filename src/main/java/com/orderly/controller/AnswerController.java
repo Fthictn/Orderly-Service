@@ -13,7 +13,7 @@ public class AnswerController {
 
     private final AnswerService service;
 
-    public AnswerController(@Qualifier("answerServiceImpl") AnswerService service) {
+    public AnswerController(AnswerService service) {
         this.service = service;
     }
 

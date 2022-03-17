@@ -5,7 +5,6 @@ import com.orderly.model.UserRequest;
 import com.orderly.response.UserResponse;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface UserService {
     UserResponse userAuthenticater(UserRequest request) throws Exception;
     UserResponse createNewUser(UserLightDTO entity);

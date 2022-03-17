@@ -12,7 +12,7 @@ public class MailController {
 
     private final MailService service;
 
-    public MailController(@Qualifier("mailServiceImpl") MailService service) {
+    public MailController(MailService service) {
         this.service = service;
     }
 

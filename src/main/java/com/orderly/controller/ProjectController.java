@@ -13,7 +13,7 @@ public class ProjectController {
 
     private final ProjectService service;
 
-    public ProjectController(@Qualifier("projectServiceImpl") ProjectService service) {
+    public ProjectController(ProjectService service) {
         this.service = service;
     }
 

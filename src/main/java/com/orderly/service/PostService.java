@@ -4,7 +4,6 @@ import com.orderly.LightDTO.PostLightDTO;
 import com.orderly.response.PostResponse;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface PostService {
     PostResponse getPostsByProjectId(int projectId);
     PostResponse getAllPosts();
