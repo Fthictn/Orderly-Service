@@ -1,8 +1,10 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/orderly?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
+    url: jdbc:postgresql://localhost:5432/orderly1
+    username: postgres
     password: root
+    initialization-mode: always
+    initialize: true
   mail:
     default-encoding: UTF-8
     host: smtp.gmail.com
@@ -22,5 +24,8 @@ spring:
   main:
     log-startup-info: false
   jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none

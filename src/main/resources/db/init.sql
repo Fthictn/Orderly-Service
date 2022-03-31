@@ -35,3 +35,4 @@ CREATE TABLE `user` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `user_email_UNIQUE` (`user_email`)
 );
+insert into `user` (user_name_surname,user_title,user_role,user_password,user_email,is_banned) values ('fethicetin','Yazılım Mühendisi','Mühendisi','123','fthi.cetin@gmail.com','0');

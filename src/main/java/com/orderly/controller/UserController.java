@@ -5,7 +5,6 @@ import com.orderly.model.UserRequest;
 import com.orderly.response.UserResponse;
 import com.orderly.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

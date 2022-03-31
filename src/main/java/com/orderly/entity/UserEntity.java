@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @ApiModel(description = "User Model")
 public class UserEntity {
     @Id
