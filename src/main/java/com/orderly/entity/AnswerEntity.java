@@ -3,10 +3,7 @@ package com.orderly.entity;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,6 +11,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "answer")
 @ApiModel(description = "Answer Model")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class AnswerEntity {
 
     @Id

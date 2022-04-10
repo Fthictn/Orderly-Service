@@ -3,9 +3,7 @@ package com.orderly.entity;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,6 +12,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @ApiModel(description = "User Model")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserEntity {
     @Id
     @NotNull

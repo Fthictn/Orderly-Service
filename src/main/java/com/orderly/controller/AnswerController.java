@@ -4,7 +4,6 @@ import com.orderly.LightDTO.AnswerLightDTO;
 import com.orderly.response.AnswerResponse;
 import com.orderly.service.AnswerService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 @ApiOperation(value = "/orderly/answer", tags = "Answer Controller", notes = "Answer API")
@@ -34,5 +33,4 @@ public class AnswerController {
     public AnswerResponse getAllAnswersByPostId(@PathVariable(value = "postId") int postId){
         return service.getAnswersByPostId(postId);
     }
-
 }

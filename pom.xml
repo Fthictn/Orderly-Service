@@ -3,12 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.example</groupId>
     <artifactId>Orderly</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -18,16 +15,8 @@
         <poi.version>3.15</poi.version>
         <swagger.version>2.9.2</swagger.version>
         <lombok.version>1.18.12</lombok.version>
-        <junit.version>4.12</junit.version>
-        <autoconfigure.version>2.4.3</autoconfigure.version>
-        <jupiter.version>5.8.1</jupiter.version>
-        <assert.version>3.19.0</assert.version>
-        <mockito.version>3.6.28</mockito.version>
         <h2database.version>1.4.200</h2database.version>
-        <spring.test.version>5.3.8</spring.test.version>
-        <jupiter.engine.version>5.6.1</jupiter.engine.version>
         <java.version>1.8</java.version>
-        <mockito.junit.jupiter.version>3.6.28</mockito.junit.jupiter.version>
         <mail.version>2.4.1</mail.version>
         <jwt.version>0.9.1</jwt.version>
         <postgres.version>42.3.3</postgres.version>
@@ -89,74 +78,22 @@
             <version>${postgres.version}</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test-autoconfigure</artifactId>
-            <version>${autoconfigure.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${jupiter.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assert.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2database.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.test.version}</version>
-            <scope>test</scope>
-        </dependency>
-         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${jupiter.engine.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>${mockito.junit.jupiter.version}</version>
-            <scope>compile</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>${mail.version}</version>
         </dependency>
-
     </dependencies>
-
-
-
     <build>
         <plugins>
             <plugin>
@@ -176,6 +113,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>

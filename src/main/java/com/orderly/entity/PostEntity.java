@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,6 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = "post")
 @ApiModel(description = "Post Model")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class PostEntity {
     @Id
     @NotNull
