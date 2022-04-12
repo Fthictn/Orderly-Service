@@ -1,6 +1,7 @@
 package com.orderly.repository;
 
 import com.orderly.entity.PostEntity;
+import com.orderly.entity.ProjectEntity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,9 @@ class PostRepositoryTest {
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    ProjectRepository projectRepository;
 
     @DisplayName("Unit test for Post save operation")
     @Test
@@ -74,7 +78,52 @@ class PostRepositoryTest {
 
     }
 
+    @DisplayName("Unit test for find post by id operation")
     @Test
-    void findByProjectId() {
+    public void givenPostObjet_whenFindPostById_thenReturnedPostObject(){
+        //given
+        PostEntity postEntity = PostEntity.builder()
+                .postContent("Post içeriğidir")
+                .postTitle("Post başlığıdır")
+                .createdTime("2021-03-16T01:18:12.214")
+                .isSolved("1")
+                .type("soru")
+                .build();
+
+        PostEntity savedEntity = postRepository.save(postEntity);
+        //when
+        PostEntity entity = postRepository.findById(savedEntity.getId()).get();
+        //then
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity).isEqualTo(postEntity);
+    }
+
+    @DisplayName("Unit test for find post by project id operation")
+    @Test
+    public void givenProjectObject_whenFindPostByProjectId_thenReturnedPostList(){
+        //given
+        ProjectEntity projectEntity = ProjectEntity.builder()
+                .projectCode("PRJ")
+                .projectName("Orderly")
+                .build();
+
+        ProjectEntity savedProject = projectRepository.save(projectEntity);
+
+        PostEntity postEntity = PostEntity.builder()
+                .postContent("Post içeriğidir")
+                .postTitle("Post başlığıdır")
+                .createdTime("2021-03-16T01:18:12.214")
+                .isSolved("1")
+                .type("soru")
+                .projectId(savedProject)
+                .build();
+
+        PostEntity savedPostEntity = postRepository.save(postEntity);
+
+        //when
+        List<PostEntity> postEntities = postRepository.findByProjectId(savedProject);
+
+        //then
+        Assertions.assertThat(postEntities.get(0)).isEqualTo(savedPostEntity);
     }
 }

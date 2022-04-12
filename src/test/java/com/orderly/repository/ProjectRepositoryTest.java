@@ -56,6 +56,26 @@ class ProjectRepositoryTest {
         Assertions.assertThat(projectEntityList.size()).isEqualTo(2);
     }
 
+    @DisplayName("Unit test for find project by id")
+    @Test
+    public void givenProjectObject_whenFindProjectById_thenReturnedProjectObject(){
+        //given
+        ProjectEntity projectEntity = ProjectEntity.builder()
+                .projectCode("PRJ")
+                .projectName("Orderly")
+                .build();
+
+        ProjectEntity savedEntity = projectRepository.save(projectEntity);
+
+        //when
+        ProjectEntity entity = projectRepository.findById(savedEntity.getId()).get();
+
+        //then
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity).isEqualTo(savedEntity);
+
+    }
+
     @Test
     void findByProjectName() {
     }

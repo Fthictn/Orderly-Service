@@ -40,7 +40,7 @@ class UserRepositoryTest {
 
     @DisplayName("Unit test for User find all operation")
     @Test
-    public void given_when_then(){
+    public void givenUserList_whenFindAllUsers_thenRetunedUserList(){
         //given
         UserEntity userEntity = UserEntity.builder()
                 .userEmail("fethicetin@gmail.com")
@@ -79,8 +79,28 @@ class UserRepositoryTest {
     void findByUserEmail() {
     }
 
+    @DisplayName("Unit test for find user by id")
     @Test
-    void findById() {
+    public void givenUserObject_whenFindUserById_thenReturnedUserObject(){
+        //given
+        UserEntity userEntity = UserEntity.builder()
+                .userEmail("fethicetin@gmail.com")
+                .userPassword("123")
+                .userNameSurname("Fethi Çetin")
+                .userRole("Software Engineer")
+                .userTitle("Engineer")
+                .isBanned("0")
+                .build();
+
+        UserEntity savedEntity = userRepository.save(userEntity);
+
+        //when
+        UserEntity entity = userRepository.findById(savedEntity.getId());
+
+        //then
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity).isEqualTo(savedEntity);
+
     }
 
     @Test
@@ -89,5 +109,6 @@ class UserRepositoryTest {
 
     @Test
     void findUserEntityByUserNameSurname() {
+
     }
 }
