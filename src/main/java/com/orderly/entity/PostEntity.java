@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostEntity {
+public class PostEntity extends BaseEntity{
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)

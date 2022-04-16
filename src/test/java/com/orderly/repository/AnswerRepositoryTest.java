@@ -3,6 +3,7 @@ package com.orderly.repository;
 import com.orderly.entity.AnswerEntity;
 import com.orderly.entity.PostEntity;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,22 @@ class AnswerRepositoryTest {
     @Autowired
     PostRepository postRepository;
 
+    AnswerEntity answerEntity;
+
+    @BeforeEach
+    public void setUp(){
+         answerEntity = AnswerEntity.builder()
+                .content("Bu bir cevaptır")
+                .createdTime("2021-03-14T17:12:15.438")
+                .isCorrect("0")
+                .build();
+    }
+
     @DisplayName("Unit test for Answer save operation")
     @Test
     public void givenAnswerObject_whenSave_thenReturnedSavedAnswer(){
 
         //given
-        AnswerEntity answerEntity = AnswerEntity.builder()
-                .content("Bu bir cevaptır")
-                .createdTime("2021-03-14T17:12:15.438")
-                .isCorrect("0")
-                .build();
         //when
         AnswerEntity savedAnswer = answerRepository.save(answerEntity);
 
@@ -38,14 +45,8 @@ class AnswerRepositoryTest {
 
     @DisplayName("Unit test for get all Answer operation")
     @Test
-    public void givenAnswersList_whenFindAll_thenAnswersList(){
+    public void givenAnswersList_whenFindAll_thenReturnedAnswersList(){
         //given
-        AnswerEntity answerEntity = AnswerEntity.builder()
-                .content("Bu bir cevaptır")
-                .createdTime("2021-03-14T17:12:15.438")
-                .isCorrect("1")
-                .build();
-
         AnswerEntity answerEntity1 = AnswerEntity.builder()
                 .content("Bu bir sevaptır")
                 .createdTime("2021-03-14T17:12:15.438")
@@ -67,11 +68,6 @@ class AnswerRepositoryTest {
     @DisplayName("Unit test for get answer by id")
     @Test
     public void givenAnswerObject_whenFindAnswerById_thenReturnAnswerObject(){
-        AnswerEntity answerEntity = AnswerEntity.builder()
-                .content("Bu bir cevaptır")
-                .createdTime("2021-03-14T17:12:15.438")
-                .isCorrect("1")
-                .build();
 
         AnswerEntity savedEntity = answerRepository.save(answerEntity);
 
@@ -95,13 +91,6 @@ class AnswerRepositoryTest {
 
         PostEntity savedPostEntity = postRepository.save(postEntity);
 
-        AnswerEntity answerEntity = AnswerEntity.builder()
-                .content("Bu bir cevaptır")
-                .createdTime("2021-03-14T17:12:15.438")
-                .isCorrect("1")
-                .postId(savedPostEntity)
-                .build();
-
         AnswerEntity savedEntity = answerRepository.save(answerEntity);
 
         //when
@@ -110,4 +99,8 @@ class AnswerRepositoryTest {
         //then
         Assertions.assertThat(entity.get(0)).isEqualTo(savedEntity);
     }
+
+
+
+
 }

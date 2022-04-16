@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AnswerEntity {
+public class AnswerEntity extends BaseEntity{
 
     @Id
     @NotNull

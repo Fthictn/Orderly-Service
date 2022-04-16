@@ -5,6 +5,7 @@ import com.orderly.entity.PostEntity;
 import com.orderly.entity.ProjectEntity;
 import com.orderly.entity.UserEntity;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,11 @@ class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @DisplayName("Unit test for User save operation")
-    @Test
-    public void givenUserObjet_whenSave_thenReturnedUser(){
-        UserEntity userEntity = UserEntity.builder()
+    UserEntity userEntity;
+
+    @BeforeEach
+    public void setUp(){
+        userEntity = UserEntity.builder()
                 .userEmail("fethicetin@gmail.com")
                 .userPassword("123")
                 .userNameSurname("Fethi Çetin")
@@ -31,9 +33,12 @@ class UserRepositoryTest {
                 .userTitle("Engineer")
                 .isBanned("0")
                 .build();
+    }
 
+    @DisplayName("Unit test for User save operation")
+    @Test
+    public void givenUserObjet_whenSave_thenReturnedUser(){
         UserEntity savedUser = userRepository.save(userEntity);
-
         Assertions.assertThat(savedUser).isNotNull();
         Assertions.assertThat(savedUser.getId()).isGreaterThan(0);
     }
@@ -42,15 +47,6 @@ class UserRepositoryTest {
     @Test
     public void givenUserList_whenFindAllUsers_thenRetunedUserList(){
         //given
-        UserEntity userEntity = UserEntity.builder()
-                .userEmail("fethicetin@gmail.com")
-                .userPassword("123")
-                .userNameSurname("Fethi Çetin")
-                .userRole("Software Engineer")
-                .userTitle("Engineer")
-                .isBanned("0")
-                .build();
-
         UserEntity userEntity1 = UserEntity.builder()
                 .userEmail("fethicetin@gmail.com")
                 .userPassword("123")
@@ -83,20 +79,9 @@ class UserRepositoryTest {
     @Test
     public void givenUserObject_whenFindUserById_thenReturnedUserObject(){
         //given
-        UserEntity userEntity = UserEntity.builder()
-                .userEmail("fethicetin@gmail.com")
-                .userPassword("123")
-                .userNameSurname("Fethi Çetin")
-                .userRole("Software Engineer")
-                .userTitle("Engineer")
-                .isBanned("0")
-                .build();
-
         UserEntity savedEntity = userRepository.save(userEntity);
-
         //when
         UserEntity entity = userRepository.findById(savedEntity.getId());
-
         //then
         Assertions.assertThat(entity).isNotNull();
         Assertions.assertThat(entity).isEqualTo(savedEntity);

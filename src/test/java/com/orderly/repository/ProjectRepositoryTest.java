@@ -2,6 +2,7 @@ package com.orderly.repository;
 
 import com.orderly.entity.ProjectEntity;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,20 @@ class ProjectRepositoryTest {
     @Autowired
     ProjectRepository projectRepository;
 
-    @DisplayName("Unit test for Project save operation")
-    @Test
-    public void givenProjectObject_whenSaved_thenReturnedProject(){
-        ProjectEntity projectEntity = ProjectEntity.builder()
+    ProjectEntity projectEntity;
+
+    @BeforeEach
+    public void setUp(){
+        projectEntity = ProjectEntity.builder()
                 .projectCode("PRJ")
                 .projectName("Orderly")
                 .build();
+    }
 
+    @DisplayName("Unit test for Project save operation")
+    @Test
+    public void givenProjectObject_whenSaved_thenReturnedProject(){
         ProjectEntity savedProject = projectRepository.save(projectEntity);
-
         Assertions.assertThat(savedProject).isNotNull();
         Assertions.assertThat(savedProject.getId()).isGreaterThan(0);
     }
@@ -35,11 +40,6 @@ class ProjectRepositoryTest {
     @Test
     public void givenProjectsList_whenFindAll_thenProjectsList(){
         //given
-        ProjectEntity projectEntity = ProjectEntity.builder()
-                .projectCode("PRJ")
-                .projectName("Orderly")
-                .build();
-
         ProjectEntity projectEntity1 = ProjectEntity.builder()
                 .projectCode("PRJ1")
                 .projectName("Orderly")
@@ -60,11 +60,6 @@ class ProjectRepositoryTest {
     @Test
     public void givenProjectObject_whenFindProjectById_thenReturnedProjectObject(){
         //given
-        ProjectEntity projectEntity = ProjectEntity.builder()
-                .projectCode("PRJ")
-                .projectName("Orderly")
-                .build();
-
         ProjectEntity savedEntity = projectRepository.save(projectEntity);
 
         //when
@@ -76,8 +71,17 @@ class ProjectRepositoryTest {
 
     }
 
+    @DisplayName("Unit test for find Project by project name")
     @Test
-    void findByProjectName() {
+    public void given_when_then(){
+        //given
+        projectRepository.save(projectEntity);
+        //when
+        ProjectEntity entity = projectRepository.findByProjectName(projectEntity.getProjectName());
+        //then
+        Assertions.assertThat(entity.getProjectName()).isEqualTo(projectEntity.getProjectName());
+        Assertions.assertThat(entity).isNotNull();
+
     }
 
     @Test

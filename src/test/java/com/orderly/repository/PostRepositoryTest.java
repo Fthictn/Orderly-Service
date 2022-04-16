@@ -3,6 +3,7 @@ package com.orderly.repository;
 import com.orderly.entity.PostEntity;
 import com.orderly.entity.ProjectEntity;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +22,23 @@ class PostRepositoryTest {
     @Autowired
     ProjectRepository projectRepository;
 
-    @DisplayName("Unit test for Post save operation")
-    @Test
-    public void givenPostObject_whenSaved_thenPost(){
-        PostEntity postEntity = PostEntity.builder()
+    PostEntity postEntity;
+
+    @BeforeEach
+    public void setUp(){
+        postEntity = PostEntity.builder()
                 .postContent("Post içeriğidir")
                 .postTitle("Post başlığıdır")
                 .createdTime("2021-03-16T01:18:12.214")
                 .isSolved("0")
                 .type("soru")
                 .build();
+    }
 
+    @DisplayName("Unit test for Post save operation")
+    @Test
+    public void givenPostObject_whenSaved_thenPost(){
         PostEntity savedPost = postRepository.save(postEntity);
-
         Assertions.assertThat(savedPost).isNotNull();
         Assertions.assertThat(savedPost.getId()).isGreaterThan(0);
     }
@@ -42,14 +47,6 @@ class PostRepositoryTest {
     @Test
     public void givenPostsList_whenFindAllPosts_thenPostsList(){
         //given
-        PostEntity postEntity = PostEntity.builder()
-                .postContent("Post içeriğidir")
-                .postTitle("Post başlığıdır")
-                .createdTime("2021-03-16T01:18:12.214")
-                .isSolved("0")
-                .type("soru")
-                .build();
-
         PostEntity postEntity1 = PostEntity.builder()
                 .postContent("Post içeriğidir")
                 .postTitle("Post başlığıdır")
@@ -82,14 +79,6 @@ class PostRepositoryTest {
     @Test
     public void givenPostObjet_whenFindPostById_thenReturnedPostObject(){
         //given
-        PostEntity postEntity = PostEntity.builder()
-                .postContent("Post içeriğidir")
-                .postTitle("Post başlığıdır")
-                .createdTime("2021-03-16T01:18:12.214")
-                .isSolved("1")
-                .type("soru")
-                .build();
-
         PostEntity savedEntity = postRepository.save(postEntity);
         //when
         PostEntity entity = postRepository.findById(savedEntity.getId()).get();
@@ -108,15 +97,6 @@ class PostRepositoryTest {
                 .build();
 
         ProjectEntity savedProject = projectRepository.save(projectEntity);
-
-        PostEntity postEntity = PostEntity.builder()
-                .postContent("Post içeriğidir")
-                .postTitle("Post başlığıdır")
-                .createdTime("2021-03-16T01:18:12.214")
-                .isSolved("1")
-                .type("soru")
-                .projectId(savedProject)
-                .build();
 
         PostEntity savedPostEntity = postRepository.save(postEntity);
 

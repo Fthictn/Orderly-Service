@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectEntity {
+public class ProjectEntity extends BaseEntity{
 
     @Id
     @NotNull
