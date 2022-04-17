@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
-    private List<UserEntity> userResponse = new ArrayList<>();
+    private List<UserEntity> userResponseList = new ArrayList<>();
 
     public UserServiceImpl(EntityToDTOConverter converter, JwtUtil jwtUtil, AuthenticationManager authenticationManager,
                            CustomUserDetailsService customUserDetailsService, UserRepository userRepository) {
@@ -55,16 +55,16 @@ public class UserServiceImpl implements UserService{
         String token = jwtUtil.generateToken(userDetails);
 
         List<UserEntity> userList= userRepository.findUserEntityByUserNameSurnameAndUserPassword(request.getUserName(),request.getPassword());
-        userResponse = new ArrayList<>();
+        userResponseList = new ArrayList<>();
         UserResponse response = new UserResponse();
         List<UserLightDTO> lightList;
         if(userList != null && !userList.isEmpty() && authResult.isAuthenticated()){
             lightList = new ArrayList<>();
-            userResponse.add(userList.get(0));
+            userResponseList.add(userList.get(0));
             response.setStatusCode(HttpStatus.OK);
             response.setErrorMessage(Messages.LOGIN_SUCCEED);
             response.setToken(token);
-            userResponse.forEach(user ->
+            userResponseList.forEach(user ->
                     lightList.add(converter.userConverter(user))
             );
             response.setResponse(lightList);
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponse createNewUser(UserLightDTO entity) {
-        userResponse = new ArrayList<>();
+        userResponseList = new ArrayList<>();
 
         List<UserEntity> allUsers = userRepository.findAll();
         UserResponse response = userExistingControl(allUsers,entity);
@@ -91,8 +91,8 @@ public class UserServiceImpl implements UserService{
         entityToSave.setUserTitle(entity.getUserTitle());
         userRepository.save(entityToSave);
         UserEntity responseEntity = userRepository.findByUserEmail(entity.getUserEmail());
-        userResponse.add(responseEntity);
-        userResponse.forEach(user ->
+        userResponseList.add(responseEntity);
+        userResponseList.forEach(user ->
                 lightList.add(converter.userConverter(user))
         );
         response.setResponse(lightList);
@@ -116,14 +116,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserResponse updateUser(UserLightDTO entity) {
         UserResponse response = new UserResponse();
-        userResponse = new ArrayList<>();
+        userResponseList = new ArrayList<>();
         List<UserLightDTO> lightList = new ArrayList<>();
         UserEntity existingEntity = userRepository.findById(entity.getId());
         userRepository.save(getExistingEntity(existingEntity,entity));
-        userResponse.add(userRepository.findByUserEmail(existingEntity.getUserEmail()));
+        userResponseList.add(userRepository.findByUserEmail(existingEntity.getUserEmail()));
         response.setErrorMessage(Messages.USER_INFOS_UPDATED);
         response.setStatusCode(HttpStatus.OK);
-        userResponse.forEach(user ->
+        userResponseList.forEach(user ->
                 lightList.add(converter.userConverter(user))
         );
         response.setResponse(lightList);

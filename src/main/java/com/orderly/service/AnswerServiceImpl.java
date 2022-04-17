@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,6 @@ public class AnswerServiceImpl implements AnswerService{
         AnswerResponse response = new AnswerResponse();
         PostEntity entity = new PostEntity();
         List<AnswerLightDTO> lightList = new ArrayList<>();
-
         entity.setId(postId);
         List<AnswerEntity> entityList = answerRepository.findByPostId(entity);
 
@@ -72,9 +70,10 @@ public class AnswerServiceImpl implements AnswerService{
         PostEntity postEntity = new PostEntity();
         postEntity.setId(entity.getPostEntity().getId());
         entityToSave.setPostId(postEntity);
-        answerRepository.save(entityToSave);
+        AnswerEntity savedEntity = answerRepository.save(entityToSave);
         response.setErrorMessage(Messages.GENERAL_SUCCEED_MESSAGE);
         response.setStatusCode(HttpStatus.OK);
+        response.setAnswerEntity(savedEntity);
         return response;
     }
 }
