@@ -16,6 +16,11 @@ import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
 public class AnswerServiceTests {
 
     private AnswerRepository answerRepository;
@@ -53,5 +58,20 @@ public class AnswerServiceTests {
 
         //then
         Assertions.assertThat(savedEntity).isNotNull();
+
     }
+
+//    @DisplayName("unit test for create vehicle operation with exception case")
+//    @Test
+//    public void givenVehicleWithoutPlate_whenCreateVehicle_thenThrowInvalidPlateException(){
+//        vehicleCreateRequest = VehicleCreateRequest.builder()
+//                .build();
+//
+//        assertThrows(VehicleInvalidPlateException.class, ()->{
+//            vehicleService.createVehicle(vehicleCreateRequest);
+//        });
+//
+//        verify(vehicleRepository,never()).save(any(Vehicle.class));
+//
+//    }
 }

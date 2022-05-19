@@ -23,7 +23,7 @@ public class AnswerController {
     }
 
     @ApiOperation(value = "Add answer", response = AnswerResponse.class)
-    @PostMapping("/createAnswer/")
+    @PostMapping("/createAnswer")
     public AnswerResponse createAnswer(@RequestBody AnswerLightDTO entity){
         return service.createAnswer(entity);
     }
