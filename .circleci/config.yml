@@ -1,14 +1,16 @@
-version: 2.1
-
+---
 jobs:
   build:
     docker:
-      -image: circleci/openjdk:8-jdk-stretch
+      ? "-image"
+        : "circleci/openjdk:8-jdk-stretch"
     steps:
       - checkout
-      - run:
-          name: clean build
-          command: ./mvnw clean install
+      -
+        run:
+          command: "./mvnw clean install"
+          name: "clean build"
+version: 2.1
 workflows:
   build-workflow:
     jobs:
